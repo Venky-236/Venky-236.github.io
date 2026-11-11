@@ -25,7 +25,7 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
 body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
 img,svg{display:block;max-width:100%}
 a{color:inherit;text-decoration:none}
-ul{list-style:none}
+ul,ol{list-style:none}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
 
 .skip{position:absolute;left:1rem;top:-3rem;z-index:100;background:var(--red);color:#fff;padding:.6rem 1rem;border-radius:.5rem;font-weight:600}
@@ -164,6 +164,63 @@ blockquote::after{content:"";display:block;width:6rem;height:2px;margin:1rem 0 0
   .stat b{font-size:1.7rem}
   .stat span{font-size:.9rem}
   .ctas .btn{flex:1 1 100%;justify-content:center}
+}
+
+/* ==========================================================================
+   Step 4 — motion. Everything here is skipped when JS is off (no .js),
+   or when the visitor asks for reduced motion (.rm).
+   ========================================================================== */
+
+/* preloader: "Routing… 100%", ~1.2 s, once per visit */
+.preloader{position:fixed;inset:0;z-index:200;background:var(--bg);display:grid;place-items:center;
+  transition:transform .55s cubic-bezier(.7,0,.2,1),visibility 0s linear .55s}
+html:not(.js) .preloader,html.no-pl .preloader{display:none}
+.preloader.done{transform:translateY(-100%);visibility:hidden}
+.pl-routes{position:absolute;inset:0;width:100%;height:100%}
+.pl-routes path{fill:none;stroke:var(--red);stroke-width:1.4;opacity:.55;stroke-dasharray:2200;stroke-dashoffset:2200;
+  animation:pl-draw 1.05s cubic-bezier(.4,0,.2,1) forwards}
+.pl-routes path:nth-child(2){animation-delay:.08s}.pl-routes path:nth-child(3){animation-delay:.16s}
+.pl-routes path:nth-child(4){animation-delay:.24s}.pl-routes path:nth-child(5){animation-delay:.12s;opacity:.35}
+@keyframes pl-draw{to{stroke-dashoffset:0}}
+.pl-count{position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--ink-2);display:flex;align-items:baseline;gap:.6rem}
+.pl-count b{font-family:var(--sans);font-style:normal;font-weight:800;font-size:clamp(2.8rem,8vw,5.5rem);color:var(--red);
+  font-variant-numeric:tabular-nums;min-width:4ch;text-align:right;text-shadow:0 0 24px var(--red-glow)}
+
+/* hero intro: items rise in one after another once the page is ready */
+html.js:not(.rm) [data-hero]{opacity:0;translate:0 26px;transition:opacity .8s ease,translate .8s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--i,0) * 90ms)}
+html.js.ready:not(.rm) [data-hero]{opacity:1;translate:0 0}
+
+/* scroll reveals: fade + slide up, once */
+html.js:not(.rm) [data-reveal]{opacity:0;translate:0 28px;transition:opacity .75s ease,translate .75s cubic-bezier(.2,.7,.2,1);transition-delay:calc(var(--d,0) * 90ms)}
+html.js:not(.rm) [data-reveal].in{opacity:1;translate:0 0}
+
+/* ==========================================================================
+   Step 5 — About
+   ========================================================================== */
+.kicker{font-size:.8rem;letter-spacing:.28em;text-transform:uppercase;color:var(--red);font-weight:600}
+.sec-h em{color:var(--red)}
+.about .sec-h{margin-top:1rem;line-height:1.1;max-width:18ch}
+.about-grid{margin-top:clamp(2.5rem,5vw,4rem);display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(2rem,5vw,5rem);align-items:start}
+.about-text p{font-size:1.08rem;line-height:1.75;color:var(--ink-2)}
+.about-text p+p{margin-top:1.1rem}
+.about-text strong{color:var(--ink);font-weight:600}
+.facts{margin-top:2rem;display:grid;gap:.9rem;padding-top:1.6rem;border-top:1px solid var(--line)}
+.facts div{display:grid;grid-template-columns:7rem 1fr;gap:1rem}
+.facts dt{color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;padding-top:.15rem}
+.facts dd{color:var(--ink);font-weight:500}
+.principles{display:grid;grid-template-columns:1fr 1fr;gap:1rem;counter-reset:none}
+.principles li{position:relative;padding:1.6rem 1.5rem 1.7rem;border:1px solid var(--line);border-radius:1rem;
+  background:linear-gradient(160deg,var(--surface-2),var(--surface));transition:border-color .3s,transform .3s}
+.principles li:hover{border-color:rgba(255,60,60,.45);transform:translateY(-3px)}
+.pn{font-weight:800;font-size:.85rem;color:var(--red);letter-spacing:.1em}
+.principles h3{margin-top:.8rem;font-family:var(--serif);font-weight:700;font-size:1.3rem;line-height:1.25}
+.principles p{margin-top:.6rem;color:var(--muted);line-height:1.55}
+@media (max-width:900px){
+  .about-grid{grid-template-columns:1fr}
+}
+@media (max-width:560px){
+  .principles{grid-template-columns:1fr}
+  .facts div{grid-template-columns:1fr;gap:.15rem}
 }
 
 @media (prefers-reduced-motion:reduce){

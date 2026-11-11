@@ -9,9 +9,33 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css">
 <link rel="stylesheet" href="css/style.css">
+<script>
+  // Runs before paint: decide whether to show the preloader and motion.
+  (function () {
+    var d = document.documentElement, seen = false;
+    d.classList.add('js');
+    var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    try { seen = sessionStorage.getItem('mv-preloaded') === '1'; } catch (e) {}
+    if (rm) d.classList.add('rm');
+    if (rm || seen) d.classList.add('no-pl');
+    // Safety net: if js/main.js never runs, show everything without motion.
+    setTimeout(function () { if (!d.classList.contains('ready')) d.classList.add('ready', 'rm', 'no-pl'); }, 3500);
+  })();
+</script>
 </head>
 <body>
+<div class="preloader" aria-hidden="true">
+  <svg class="pl-routes" viewBox="0 0 1600 900" preserveAspectRatio="none">
+    <path d="M0 180 H420 L470 230 H900 L950 180 H1600"/>
+    <path d="M0 330 H260 L310 380 H760 L800 340 H1600"/>
+    <path d="M0 520 H560 L610 470 H1100 L1150 520 H1600"/>
+    <path d="M0 690 H340 L390 740 H980 L1030 690 H1600"/>
+    <path d="M300 0 V140 L340 180 M1240 900 V740 L1200 700 M760 0 V90 L800 130 M640 900 V780 L680 740"/>
+  </svg>
+  <div class="pl-count"><span>Routing…</span> <b><span class="pl-num">0</span>%</b></div>
+</div>
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav" id="top">
@@ -44,25 +68,25 @@
 
   <div class="hero-grid">
     <div class="hero-left">
-      <p class="eyebrow"><i aria-hidden="true"></i>VLSI <span>|</span> ASIC PHYSICAL DESIGN <span>|</span> SYSTEM DESIGNER</p>
-      <h1 id="hero-name"><span class="m">M.</span> <span class="v">Venkatesh</span>
+      <p class="eyebrow" data-hero style="--i:0"><i aria-hidden="true"></i>VLSI <span>|</span> ASIC PHYSICAL DESIGN <span>|</span> SYSTEM DESIGNER</p>
+      <h1 id="hero-name" data-hero style="--i:1"><span class="m">M.</span> <span class="v">Venkatesh</span>
         <svg viewBox="0 0 400 40" aria-hidden="true"><path d="M4 30 C120 38 260 30 396 6"/></svg></h1>
-      <p class="roles">INNOVATOR <em aria-hidden="true">·</em> DESIGNER <em aria-hidden="true">·</em> BUILDER</p>
-      <p class="tag">Turning <em>Original Ideas</em><br>into Real Hardware</p>
-      <p class="lead">I'm an EEE graduate who designs chips from the RTL up. My latest, IVCU-EV, is a 41-module electric-vehicle safety SoC that I took from Verilog to a routed, DRC-clean layout on open-source tools.</p>
-      <div class="ctas">
+      <p class="roles" data-hero style="--i:2">INNOVATOR <em aria-hidden="true">·</em> DESIGNER <em aria-hidden="true">·</em> BUILDER</p>
+      <p class="tag" data-hero style="--i:3">Turning <em>Original Ideas</em><br>into Real Hardware</p>
+      <p class="lead" data-hero style="--i:4">I'm an EEE graduate who designs chips from the RTL up. My latest, IVCU-EV, is a 41-module electric-vehicle safety SoC that I took from Verilog to a routed, DRC-clean layout on open-source tools.</p>
+      <div class="ctas" data-hero style="--i:5">
         <a class="btn solid" href="#innovations">See the IVCU chip <span aria-hidden="true">↗</span></a>
         <a class="btn" href="#contact">Get in touch <span aria-hidden="true">↗</span></a>
       </div>
     </div>
 
-    <figure class="portrait-wrap">
+    <figure class="portrait-wrap" data-hero style="--i:1">
       <div class="ring" aria-hidden="true"></div>
       <!-- PLACEHOLDER: cut from an AI-enhanced photo. Replace with Venky's real high-resolution photo before going live. -->
       <img class="portrait" src="img/venky.webp" alt="Meesala Venkatesh, smiling, in a dark navy shirt" fetchpriority="high">
     </figure>
 
-    <div class="hero-right">
+    <div class="hero-right" data-hero style="--i:4">
       <blockquote>Every project here started from a simple question —<br>“What if we build this ourselves?”</blockquote>
       <ul class="feats">
         <li class="feat"><div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 2 8l10 5 10-5-10-5z"/><path d="m2 13 10 5 10-5M2 17.5 12 22l10-4.5"/></svg></div>
@@ -75,7 +99,7 @@
     </div>
   </div>
 
-  <ul class="stats" aria-label="At a glance">
+  <ul class="stats" aria-label="At a glance" data-hero style="--i:6">
     <li class="stat"><b>3</b><span>SoCs Taken to Layout</span><small>Sky130 · 14nm · 32nm</small></li>
     <li class="stat"><b>1st <i>×3</i></b><span>Prize Winner</span><small>Engineers' Day · Hackathon · SUNRISE 2K25</small></li>
     <li class="stat"><b>8 + 4</b><span>Months — Internship &amp; Training</span><small>8 in VLSI · 4 in other domains</small></li>
@@ -93,7 +117,30 @@
 </section>
 
 <!-- Sections below are placeholders; they are built in steps 5–9. -->
-<section id="about" class="sec" aria-labelledby="about-h"><div class="wrap"><h2 id="about-h" class="sec-h">About</h2></div></section>
+<section id="about" class="sec about" aria-labelledby="about-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>01 — About</p>
+    <h2 id="about-h" class="sec-h" data-reveal>I like problems that<br><em>take ten tries to crack.</em></h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <p data-reveal>I studied Electrical and Electronics Engineering at NRI Institute of Technology, Vijayawada (2021–2025). In my final year I fell for chip design.</p>
+        <p data-reveal>I trained in physical design on Synopsys ICC2, then built my own SoC on open-source tools to see every step for myself — from the first line of Verilog to a routed layout.</p>
+        <p data-reveal>Now I'm looking for a <strong>Physical Design engineer</strong> role, and I'm applying for a <strong>Master's in semiconductors</strong>.</p>
+        <dl class="facts" data-reveal>
+          <div><dt>Degree</dt><dd>B.Tech, EEE · First Class</dd></div>
+          <div><dt>Training</dt><dd>VLSI First, Hyderabad · Maven Silicon, Bengaluru</dd></div>
+          <div><dt>Based in</dt><dd>Vijayawada, India</dd></div>
+        </dl>
+      </div>
+      <ol class="principles">
+        <li data-reveal style="--d:0"><span class="pn">01</span><h3>Safety is the spec.</h3><p>My projects start with who could get hurt: farmers, riders, drivers.</p></li>
+        <li data-reveal style="--d:1"><span class="pn">02</span><h3>Verify with a query, not with reasoning.</h3><p>When a number surprises me, I ask the tool before I build a theory.</p></li>
+        <li data-reveal style="--d:2"><span class="pn">03</span><h3>Fix the cause, not the number.</h3><p>My worst hold failure was a wrong constraint, not a bad clock tree.</p></li>
+        <li data-reveal style="--d:3"><span class="pn">04</span><h3>Say what isn't done.</h3><p>Every project page lists its open issues.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
 <section id="innovations" class="sec" aria-labelledby="inno-h"><div class="wrap"><h2 id="inno-h" class="sec-h">Innovations</h2></div></section>
 <section id="projects" class="sec" aria-labelledby="proj-h"><div class="wrap"><h2 id="proj-h" class="sec-h">Projects</h2></div></section>
 <section id="skills" class="sec" aria-labelledby="skills-h"><div class="wrap"><h2 id="skills-h" class="sec-h">Skills</h2></div></section>
