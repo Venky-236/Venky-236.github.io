@@ -525,6 +525,11 @@ html.cs-page{scroll-padding-top:6rem}   /* plain class, not :has() — :has on <
   .tbl th,.tbl td{padding:.55rem .7rem}
 }
 
+/* 404 page */
+.nf{min-height:100svh;display:grid;place-items:center;text-align:left;padding:3rem 0}
+.nf .sec-h{margin-top:.8rem}
+.nf-links{margin-top:2rem;display:flex;flex-wrap:wrap;gap:1rem}
+
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
 }
