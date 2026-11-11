@@ -91,7 +91,43 @@ function startNavSpy() {
   document.querySelectorAll('.hero, main > section[id]').forEach((s) => io.observe(s));
 }
 
+/* ---------- 5. phone menu ---------- */
+function startMenu() {
+  const btn = document.querySelector('.menu-btn');
+  const list = document.getElementById('site-links');
+  if (!btn || !list) return;
+  const label = btn.querySelector('.menu-txt');
+  const setOpen = (open, { returnFocus = false } = {}) => {
+    root.classList.toggle('menu-open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    if (label) label.textContent = open ? 'Close' : 'Menu';
+    if (lenis) (open ? lenis.stop() : lenis.start());
+    if (open) list.querySelector('a')?.focus();
+    else if (returnFocus) btn.focus();
+  };
+  btn.addEventListener('click', () => setOpen(!root.classList.contains('menu-open')));
+  // capture phase: close (and restart smooth scroll) before the link's own scroll handler runs
+  list.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); }, true);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && root.classList.contains('menu-open')) setOpen(false, { returnFocus: true });
+  });
+  // keep keyboard focus inside the open menu (button + links)
+  document.addEventListener('focusin', (e) => {
+    if (!root.classList.contains('menu-open')) return;
+    if (!list.contains(e.target) && e.target !== btn) btn.focus();
+  });
+  // leaving phone width closes the menu
+  matchMedia('(min-width: 901px)').addEventListener('change', (m) => { if (m.matches) setOpen(false); });
+}
+
+/* ---------- 6. keyboard: never tab onto something still hidden by a reveal ---------- */
+document.addEventListener('focusin', (e) => {
+  e.target.closest('[data-reveal]')?.classList.add('in');
+  if (e.target.closest('[data-hero]')) root.classList.add('ready');
+});
+
 /* ---------- go ---------- */
+startMenu();
 startNavSpy();
 startLenis(); // loads in parallel; never blocks the page
 runPreloader().then(() => {

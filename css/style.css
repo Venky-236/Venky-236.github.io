@@ -13,6 +13,7 @@
   --red:#ff2a2a;
   --red-soft:#ff5a4a;
   --red-glow:rgba(255,40,40,.45);
+  --red-fill:#d61a1a;        /* behind white text: 5.2:1 (the bright --red is only 3.7:1 under white) */
   --serif:"Playfair Display",Georgia,"Times New Roman",serif;
   --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --gutter:clamp(1rem,4.6vw,5.5rem);
@@ -28,14 +29,14 @@ a{color:inherit;text-decoration:none}
 ul,ol{list-style:none}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px;border-radius:4px}
 
-.skip{position:absolute;left:1rem;top:-3rem;z-index:100;background:var(--red);color:#fff;padding:.6rem 1rem;border-radius:.5rem;font-weight:600}
+.skip{position:absolute;left:1rem;top:-3rem;z-index:300;background:var(--red-fill);color:#fff;padding:.6rem 1rem;border-radius:.5rem;font-weight:600}
 .skip:focus{top:1rem}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-flex;align-items:center;gap:.5rem;border-radius:999px;padding:.85rem 1.6rem;font-weight:600;font-size:1rem;
   border:1.5px solid rgba(255,255,255,.85);transition:transform .25s,box-shadow .25s,background .25s;white-space:nowrap}
 .btn:hover{transform:translateY(-2px)}
-.btn.solid{background:linear-gradient(180deg,#ff3a32,#d81414);border-color:#ff5a50;box-shadow:0 0 24px var(--red-glow)}
+.btn.solid{color:#fff;background:linear-gradient(180deg,#e01d1d,#b80f0f);border-color:#ff5a50;box-shadow:0 0 24px var(--red-glow)}
 .btn.solid:hover{box-shadow:0 0 34px rgba(255,40,40,.65)}
 
 /* ---------- nav ---------- */
@@ -49,6 +50,15 @@ ul,ol{list-style:none}
 .links a:hover{color:#fff}
 .links a.on{color:var(--red)}
 .links a.on::after{content:"";position:absolute;left:-.4rem;right:-.4rem;bottom:-.45rem;height:2px;background:var(--red);box-shadow:0 0 10px var(--red)}
+
+/* ---------- phone menu (step 10) ---------- */
+.menu-btn{display:none;margin-left:auto;align-items:center;gap:.55rem;padding:.6rem .95rem;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.04);color:var(--ink);font:600 .92rem var(--sans);cursor:pointer}
+.menu-ic{position:relative;width:1.05rem;height:.7rem;display:block}
+.menu-ic i{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor;transition:transform .25s,top .25s}
+.menu-ic i:first-child{top:0}.menu-ic i:last-child{top:calc(100% - 2px)}
+html.menu-open .menu-ic i:first-child{top:calc(50% - 1px);transform:rotate(45deg)}
+html.menu-open .menu-ic i:last-child{top:calc(50% - 1px);transform:rotate(-45deg)}
 
 /* ---------- hero ---------- */
 .hero{position:relative;isolation:isolate;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;margin-top:calc(-1 * var(--nav-h));padding-top:var(--nav-h)}
@@ -133,7 +143,17 @@ blockquote::after{content:"";display:block;width:6rem;height:2px;margin:1rem 0 0
 /* ---------- phones & tablets: stack. Photo → name → tag → buttons → stats 2×2 ---------- */
 @media (max-width:900px){
   :root{--nav-h:4.4rem}
-  .links{display:none}               /* TODO step 10: small menu button */
+  .menu-btn{display:inline-flex}
+  .nav{gap:.6rem}
+  .links{display:none}
+  html.menu-open .links{display:flex;flex-direction:column;gap:0;position:fixed;z-index:19;left:0;right:0;top:var(--nav-h);bottom:0;
+    padding:1.5rem var(--gutter) 2rem;background:rgba(7,6,8,.98);overflow-y:auto;border-top:1px solid var(--line)}
+  html.menu-open .links li{border-bottom:1px solid var(--line)}
+  html.menu-open .links a{display:block;padding:1.05rem 0;font-family:var(--serif);font-style:italic;font-weight:700;font-size:1.7rem;color:var(--ink)}
+  html.menu-open .links a.on{color:var(--red)}
+  html.menu-open .links a.on::after{display:none}
+  html.menu-open body{overflow:hidden}
+  html.menu-open .nav{position:fixed;left:0;right:0;top:0;background:var(--bg)}
   .logo{font-size:2rem}
   .btn{padding:.7rem 1.2rem;font-size:.95rem}
   .hero{min-height:auto}
@@ -233,7 +253,7 @@ html.js:not(.rm) [data-reveal].in{opacity:1;translate:0 0}
   background:linear-gradient(165deg,var(--surface-2),var(--surface));transition:border-color .3s,box-shadow .3s}
 .card:hover{border-color:rgba(255,60,60,.4);box-shadow:0 0 0 1px rgba(255,60,60,.08),0 18px 40px -20px rgba(255,30,30,.35)}
 .card-meta{font-size:.8rem;letter-spacing:.06em;color:var(--muted);display:flex;flex-wrap:wrap;align-items:center;gap:.6rem}
-.badge{display:inline-block;padding:.22rem .6rem;border-radius:999px;background:var(--red);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+.badge{display:inline-block;padding:.22rem .6rem;border-radius:999px;background:var(--red-fill);color:#fff;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
 .card h3{font-family:var(--serif);font-weight:700;font-size:1.55rem;line-height:1.2}
 .card h3 span{display:block;margin-top:.3rem;font-family:var(--sans);font-size:.92rem;font-weight:500;color:var(--red-soft);letter-spacing:.02em}
 .ie{display:grid;gap:.9rem}
@@ -413,7 +433,7 @@ html:has(.cs-nav){scroll-padding-top:6rem}
 .prio{counter-reset:p;display:grid;gap:.8rem}
 .prio li{counter-increment:p;position:relative;padding:.9rem 1rem .9rem 3.2rem;border:1px solid var(--line);border-radius:.8rem;background:var(--surface);color:var(--ink-2);line-height:1.6}
 .prio li::before{content:counter(p);position:absolute;left:1rem;top:.85rem;width:1.5rem;height:1.5rem;border-radius:50%;display:grid;place-items:center;
-  background:var(--red);color:#fff;font-weight:800;font-size:.8rem}
+  background:var(--red-fill);color:#fff;font-weight:800;font-size:.8rem}
 .prio li b{color:var(--ink)}
 .prio.open li::before{background:transparent;border:1.5px solid var(--red);color:var(--red)}
 
