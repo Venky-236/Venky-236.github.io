@@ -141,7 +141,96 @@
     </div>
   </div>
 </section>
-<section id="innovations" class="sec" aria-labelledby="inno-h"><div class="wrap"><h2 id="inno-h" class="sec-h">Innovations</h2></div></section>
+<section id="innovations" class="sec inno" aria-labelledby="inno-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>02 — Innovations</p>
+    <h2 id="inno-h" class="sec-h" data-reveal>Idea <span class="arrow">→</span> <em>Execution</em></h2>
+    <p class="sec-sub" data-reveal>Every project below started as my own idea. Each card shows where the idea came from and what I actually built.</p>
+
+    <div class="cards">
+      <!-- ===== Featured: IVCU-EV V4 ===== -->
+      <article class="card feat-card" data-reveal aria-labelledby="c-ivcu">
+        <div class="card-main">
+          <p class="card-meta"><span class="badge">Featured</span> Jan – Aug 2026 · Independent chip design</p>
+          <h3 id="c-ivcu">IVCU-EV V4 <span>Dual-mode EV safety SoC</span></h3>
+          <dl class="ie">
+            <div><dt>Idea</dt><dd>After a crash, an electric vehicle's battery pack can still be live. I designed a controller around one requirement: cut high voltage within 50 ms of a crash, in a car or a motorcycle, from the same chip.</dd></div>
+            <div><dt>Execution</dt><dd>About two months re-architecting the RTL until it synthesized clean, then the full physical-design flow on SkyWater 130 nm: floorplan, power grid, placement, clock tree and routing — to a <strong>DRC-clean routed layout</strong>.</dd></div>
+          </dl>
+          <ul class="chips" aria-label="Tools">
+            <li>Verilog-2001</li><li>Yosys + ABC</li><li>OpenSTA</li><li>OpenRAM</li><li>OpenROAD</li><li>Sky130</li>
+          </ul>
+          <div class="card-links">
+            <span class="btn sm soon">Case study — coming soon</span>
+            <a class="btn sm" href="https://github.com/Venky-236/ivcu-ev-v4" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <div class="card-side">
+          <ul class="kpis" aria-label="Key numbers">
+            <li><b>41</b><span>RTL modules</span></li>
+            <li><b>55,381</b><span>placed instances</span></li>
+            <li><b>4</b><span>clock domains</span></li>
+            <li><b>0</b><span>routing DRC violations</span></li>
+          </ul>
+          <figure class="drc">
+            <figcaption>Detailed routing: DRC violations per pass <span>(log scale)</span></figcaption>
+            <svg viewBox="0 0 300 120" role="img" aria-labelledby="drc-t drc-d" class="drc-svg">
+              <title id="drc-t">Routing violations fell from 28,340 to 0 in 9 passes</title>
+              <desc id="drc-d">Pass 0: 28,340. Pass 1: 15,591. Pass 2: 13,739. Pass 3: 2,200. Pass 4: 264. Pass 5: 61. Pass 6: 10. Pass 7: 6. Pass 8: 6. Pass 9: 0.</desc>
+              <g class="drc-grid"><line x1="20" y1="100" x2="290" y2="100"/><line x1="20" y1="10" x2="20" y2="100"/></g>
+              <!-- y = 100 − 90·log10(v+1)/log10(28341); source: pd_v4/stage5_session2.log -->
+              <polyline class="drc-line" points="20,10 50,15.2 80,16.4 110,32.4 140,51 170,63.8 200,79 230,82.9 260,82.9 290,100"/>
+              <g class="drc-dots"><circle cx="20" cy="10" r="2.6"/><circle cx="50" cy="15.2" r="2.6"/><circle cx="80" cy="16.4" r="2.6"/><circle cx="110" cy="32.4" r="2.6"/><circle cx="140" cy="51" r="2.6"/><circle cx="170" cy="63.8" r="2.6"/><circle cx="200" cy="79" r="2.6"/><circle cx="230" cy="82.9" r="2.6"/><circle cx="260" cy="82.9" r="2.6"/><circle class="zero" cx="290" cy="100" r="3.6"/></g>
+              <text x="24" y="16" class="drc-lbl">28,340</text>
+              <text x="290" y="92" class="drc-lbl end" text-anchor="end">0</text>
+              <text x="20" y="114" class="drc-ax">pass 0</text>
+              <text x="290" y="114" class="drc-ax" text-anchor="end">pass 9</text>
+            </svg>
+          </figure>
+        </div>
+      </article>
+
+      <!-- ===== Farmer Safety System ===== -->
+      <article class="card" data-reveal style="--d:0" aria-labelledby="c-farmer">
+        <p class="card-meta">Final-year project · Published 2025</p>
+        <h3 id="c-farmer">Farmer Safety System <span>AI snake detection &amp; bite alert</span></h3>
+        <dl class="ie">
+          <div><dt>Idea</dt><dd>It came from a personal loss to a snakebite. Farmers work far from help, so the field itself should warn them — and raise an alarm if someone is bitten.</dd></div>
+          <div><dt>Execution</dt><dd>A two-person build: motion, thermal and sound sensors with a TensorFlow Lite model on a Raspberry Pi 4, an Arduino Nano body-temperature check for bites, solar powered.</dd></div>
+        </dl>
+        <ul class="awards">
+          <li>1st place — Engineers' Day Project Expo, 2023</li>
+          <li>1st prize — College Hackathon, 2024</li>
+        </ul>
+        <ul class="chips" aria-label="Tools"><li>Raspberry Pi 4</li><li>TensorFlow Lite</li><li>OpenCV</li><li>Arduino</li></ul>
+        <div class="card-links"><a class="btn sm" href="https://doi.org/10.5281/zenodo.15226236" target="_blank" rel="noopener">Read the paper <span aria-hidden="true">↗</span></a></div>
+      </article>
+
+      <!-- ===== Smart Railway ===== -->
+      <article class="card" data-reveal style="--d:1" aria-labelledby="c-rail">
+        <p class="card-meta">Jan – Feb 2025</p>
+        <h3 id="c-rail">Smart Railway Junction <span>Automatic track switching</span></h3>
+        <dl class="ie">
+          <div><dt>Idea</dt><dd>Manual signalling is a single point of failure. A junction should switch itself — and refuse to send a train into an occupied loop.</dd></div>
+          <div><dt>Execution</dt><dd>Three ultrasonic sensors and a servo on an Arduino. The junction switches in under 0.5 s, with a safety lock that brakes instead of switching into a collision. Tested over 50+ cycles.</dd></div>
+        </dl>
+        <ul class="awards"><li>1st prize — Electrical Project Expo, SUNRISE 2K25 (national-level fest)</li></ul>
+        <ul class="chips" aria-label="Tools"><li>Arduino Uno</li><li>HC-SR04</li><li>Servo control</li><li>State machine</li></ul>
+      </article>
+
+      <!-- ===== Guardian Band ===== -->
+      <article class="card" data-reveal style="--d:2" aria-labelledby="c-guard">
+        <p class="card-meta">Oct – Dec 2025 · In progress</p>
+        <h3 id="c-guard">Guardian Band <span>Women's safety wearable SoC</span></h3>
+        <dl class="ie">
+          <div><dt>Idea</dt><dd>A safety device that looks like an ordinary bangle: no phone, no app, no tracking. Five taps by the wearer — or signs that she is unconscious — send an alert with her location.</dd></div>
+          <div><dt>Execution</dt><dd>RTL for the tap detector, motion monitor, power manager, GPS and cellular blocks, taken through Synopsys Design Compiler and IC Compiler II on a 14 nm teaching library, with clock gating for low power.</dd></div>
+        </dl>
+        <ul class="chips" aria-label="Tools"><li>Verilog</li><li>Design Compiler</li><li>IC Compiler II</li><li>UPF</li></ul>
+      </article>
+    </div>
+  </div>
+</section>
 <section id="projects" class="sec" aria-labelledby="proj-h"><div class="wrap"><h2 id="proj-h" class="sec-h">Projects</h2></div></section>
 <section id="skills" class="sec" aria-labelledby="skills-h"><div class="wrap"><h2 id="skills-h" class="sec-h">Skills</h2></div></section>
 <section id="contact" class="sec" aria-labelledby="contact-h"><div class="wrap"><h2 id="contact-h" class="sec-h">Contact</h2>
