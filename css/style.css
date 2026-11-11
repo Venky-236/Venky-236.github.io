@@ -303,6 +303,72 @@ html.js:not(.rm) .feat-card.in .drc-line{stroke-dashoffset:0}
 }
 
 /* ==========================================================================
+   Step 9 — Research & training, Skills, Journey, Creative, Contact
+   ========================================================================== */
+.rt-grid{margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:1.25rem}
+.rt-grid>*{min-width:0}
+.badge.ghost{background:transparent;border:1px solid rgba(255,90,74,.6);color:var(--red-soft)}
+.cite{font-size:.86rem;color:var(--muted);line-height:1.5}
+.card .body{color:var(--ink-2);line-height:1.65;font-size:.97rem}
+.card .body b{color:var(--ink)}
+.fine{font-size:.82rem;color:var(--muted);line-height:1.5}
+.soc-list,.exp-list{display:grid;gap:.9rem}
+.soc-list li,.exp-list li{padding-left:1rem;border-left:2px solid rgba(255,60,60,.4)}
+.soc-list b,.exp-list b{display:block;color:var(--ink);font-size:.98rem}
+.soc-list span,.exp-list span{display:block;margin-top:.15rem;color:var(--ink-2);font-size:.9rem;line-height:1.55}
+.soc-list span b{display:inline;color:var(--red)}
+.exp-list span{color:var(--muted)}
+
+.skills{margin-top:clamp(2.5rem,5vw,3.5rem);display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
+.skill{padding:1.5rem 1.4rem;border:1px solid var(--line);border-radius:1rem;background:linear-gradient(165deg,var(--surface-2),var(--surface));display:flex;flex-direction:column;gap:1rem}
+.skill h3{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem .7rem;font-size:1.1rem;font-weight:700}
+.skill .chips{margin-top:0}
+.skill .chips li{color:var(--ink-2)}
+.lvl{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.22rem .55rem;border-radius:999px;background:rgba(255,42,42,.15);color:var(--red-soft);border:1px solid rgba(255,60,60,.35)}
+.lvl-basic{background:transparent;color:var(--muted);border-color:var(--line)}
+
+.journey{margin-top:clamp(2.5rem,5vw,3.5rem);position:relative;display:grid;gap:0;max-width:52rem}
+.journey::before{content:"";position:absolute;left:8.6rem;top:.6rem;bottom:.6rem;width:1px;background:linear-gradient(var(--red),rgba(255,42,42,.1))}
+.journey li{position:relative;display:grid;grid-template-columns:8rem 1fr;gap:1.6rem;padding:.85rem 0}
+.journey li::before{content:"";position:absolute;left:calc(8.6rem - 5px);top:1.3rem;width:11px;height:11px;border-radius:50%;background:var(--bg);border:2px solid rgba(255,90,74,.7)}
+.journey li.win::before{background:var(--red);border-color:var(--red);box-shadow:0 0 10px var(--red-glow)}
+.journey li.now::before{background:#fff;border-color:#fff;box-shadow:0 0 0 5px rgba(255,255,255,.12)}
+.journey time{text-align:right;color:var(--muted);font-size:.88rem;font-weight:600;padding-top:.15rem;font-variant-numeric:tabular-nums}
+.journey p{color:var(--ink-2);line-height:1.6}
+.journey b{color:var(--ink)}
+.journey li.now p{color:var(--ink);font-weight:600}
+
+.creative{background:radial-gradient(60% 80% at 85% 50%,rgba(240,181,68,.10),transparent 70%),#050405}
+.creative-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:2rem;align-items:center}
+.creative .sec-h em{color:#f0b544}
+.creative .kicker{color:#f0b544}
+.creative .card-links{margin-top:1.6rem}
+.bow{width:min(100%,260px);justify-self:center;overflow:visible}
+.bow path{fill:none;stroke:#f0b544;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.bow .str{stroke:rgba(240,181,68,.5);stroke-width:1.5}
+.bow .arr{stroke:var(--ink);stroke-width:2.5}
+
+.contact .mail{margin-top:2rem}
+.socials{margin-top:2rem;display:flex;flex-wrap:wrap;gap:.8rem 2rem}
+.socials a{font-weight:600;color:var(--ink-2);border-bottom:1px solid var(--line);padding-bottom:.2rem;transition:color .2s,border-color .2s}
+.socials a:hover{color:var(--red);border-color:var(--red)}
+
+@media (max-width:1100px){
+  .rt-grid{grid-template-columns:1fr 1fr}
+  .rt-grid .paper{grid-column:1 / -1}
+  .skills{grid-template-columns:1fr 1fr}
+}
+@media (max-width:640px){
+  .rt-grid,.skills{grid-template-columns:minmax(0,1fr)}
+  .creative-grid{grid-template-columns:1fr}
+  .bow{width:160px;justify-self:start}
+  .journey::before{left:.3rem}
+  .journey li{grid-template-columns:1fr;gap:.2rem;padding:.75rem 0 .75rem 1.8rem}
+  .journey li::before{left:-.05rem;top:1.05rem}
+  .journey time{text-align:left}
+}
+
+/* ==========================================================================
    Step 8 — IVCU case study (ivcu.html)
    ========================================================================== */
 html:has(.cs-nav){scroll-padding-top:6rem}

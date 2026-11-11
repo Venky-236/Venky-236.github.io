@@ -255,10 +255,146 @@
     </div>
   </div>
 </section>
-<section id="projects" class="sec" aria-labelledby="proj-h"><div class="wrap"><h2 id="proj-h" class="sec-h">Projects</h2></div></section>
-<section id="skills" class="sec" aria-labelledby="skills-h"><div class="wrap"><h2 id="skills-h" class="sec-h">Skills</h2></div></section>
-<section id="contact" class="sec" aria-labelledby="contact-h"><div class="wrap"><h2 id="contact-h" class="sec-h">Contact</h2>
-  <p><a class="mail" href="mailto:mvenky0236@gmail.com">mvenky0236@gmail.com</a></p></div></section>
+<!-- ================= 03 Research & training ================= -->
+<section id="projects" class="sec" aria-labelledby="proj-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>03 — Research &amp; training</p>
+    <h2 id="proj-h" class="sec-h" data-reveal>Published, and <em>trained on industry tools.</em></h2>
+
+    <div class="rt-grid">
+      <!-- Paper -->
+      <article class="card paper" data-reveal aria-labelledby="paper-h">
+        <p class="card-meta"><span class="badge">Published</span> IJSRED · Mar – Apr 2025</p>
+        <h3 id="paper-h">Farmer's Safety from Reptiles</h3>
+        <p class="cite">International Journal of Scientific Research and Engineering Development, Vol. 8, Issue 2, pp. 848–854 · ISSN 2581-7175 · Open access</p>
+        <p class="body">An IoT system that detects snakes in the field — motion, thermal and sound sensors confirmed by a TensorFlow Lite model on a Raspberry Pi 4 — raises local and mobile alerts, and watches for signs of a bite. Solar powered, for fields with no mains supply.</p>
+        <p class="body"><b>My part:</b> the idea was mine. Two of us built it end to end — hardware, sensor integration, the ML model and testing. Co-author, 5 of 6.</p>
+        <div class="card-links">
+          <a class="btn solid sm" href="https://doi.org/10.5281/zenodo.15226236" target="_blank" rel="noopener">DOI 10.5281/zenodo.15226236 <span aria-hidden="true">↗</span></a>
+          <a class="btn sm" href="https://www.ijsred.com/volume8/issue2/IJSRED-V8I2P102.pdf" target="_blank" rel="noopener">PDF <span aria-hidden="true">↗</span></a>
+        </div>
+      </article>
+
+      <!-- Training SoCs -->
+      <article class="card" data-reveal style="--d:1" aria-labelledby="train-h">
+        <p class="card-meta"><span class="badge ghost">Training</span> VLSI First, Hyderabad · Synopsys IC Compiler II</p>
+        <h3 id="train-h">Two SoCs in the commercial flow</h3>
+        <ul class="soc-list">
+          <li><b>ORCA · 14 nm</b><span>32 macros, 72K standard cells. Full flow: macro placement, power planning, CTS, routing, timing closure, DRC/LVS verification.</span></li>
+          <li><b>Chip Top · 32 nm</b><span>4 macros, 17K standard cells. RTL-to-GDSII, timing closed at <b>416 MHz</b> through iterative ECO.</span></li>
+        </ul>
+        <p class="fine">These were course designs, not my own concepts.</p>
+      </article>
+
+      <!-- Training & experience list -->
+      <article class="card" data-reveal style="--d:2" aria-labelledby="exp-h">
+        <p class="card-meta">Training &amp; experience</p>
+        <h3 id="exp-h">8 months in VLSI, 4 in other fields</h3>
+        <ul class="exp-list">
+          <li><b>VLSI First, Hyderabad</b><span>Physical design training, Feb – Aug 2025 (certified 18 Aug 2025); project work continued to Oct 2025</span></li>
+          <li><b>Maven Silicon, Bengaluru</b><span>VLSI fundamentals, 2 months, 2025</span></li>
+          <li><b>APGENCO Dr. NTTPS</b><span>Industrial training, thermal power plant, 6 weeks (May – Jul 2023)</span></li>
+          <li><b>Sakura Auto Parts</b><span>Industrial training, 2 months</span></li>
+          <li><b>PLC &amp; SCADA</b><span>Automation internship, 1 month</span></li>
+        </ul>
+        <p class="fine">Courses (Udemy, 2026): ASIC Synthesis, STA &amp; PD · UPF Power-Aware Design · Linux &amp; Scripting for VLSI.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 Skills ================= -->
+<section id="skills" class="sec" aria-labelledby="skills-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>04 — Skills</p>
+    <h2 id="skills-h" class="sec-h" data-reveal>What I've <em>actually used.</em></h2>
+    <p class="sec-sub" data-reveal>Only tools that appear in my own project files. Levels are my honest self-assessment.</p>
+    <div class="skills">
+      <div class="skill" data-reveal style="--d:0">
+        <h3>Physical design <span class="lvl">Intermediate</span></h3>
+        <ul class="chips"><li>Floorplanning</li><li>Power planning</li><li>Placement</li><li>Clock tree synthesis</li><li>Routing</li><li>Timing closure</li><li>Congestion analysis</li><li>Static timing analysis</li></ul>
+      </div>
+      <div class="skill" data-reveal style="--d:1">
+        <h3>EDA tools <span class="lvl">Intermediate</span></h3>
+        <ul class="chips"><li>Synopsys IC Compiler II</li><li>Design Compiler</li><li>OpenROAD</li><li>OpenSTA</li><li>Yosys + ABC</li><li>OpenRAM</li></ul>
+        <p class="fine">DRC/LVS and antenna checks: in ICC2 training.</p>
+      </div>
+      <div class="skill" data-reveal style="--d:2">
+        <h3>Digital design</h3>
+        <ul class="chips"><li>Verilog-2001</li><li>Clock-domain crossing</li><li>Clock gating</li><li>SRAM macro integration</li><li>SDC constraints</li></ul>
+      </div>
+      <div class="skill" data-reveal style="--d:3">
+        <h3>Scripting <span class="lvl lvl-basic">Basic · learning</span></h3>
+        <ul class="chips"><li>Tcl</li><li>Python</li></ul>
+      </div>
+      <div class="skill" data-reveal style="--d:4">
+        <h3>Embedded &amp; ML</h3>
+        <ul class="chips"><li>Raspberry Pi</li><li>Arduino</li><li>TensorFlow Lite</li><li>OpenCV</li><li>Sensor integration</li></ul>
+      </div>
+      <div class="skill" data-reveal style="--d:5">
+        <h3>Environment</h3>
+        <ul class="chips"><li>Linux</li><li>WSL</li><li>Git &amp; GitHub</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 05 Journey ================= -->
+<section id="journey" class="sec" aria-labelledby="journey-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>05 — Journey</p>
+    <h2 id="journey-h" class="sec-h" data-reveal>How I got <em>here.</em></h2>
+    <ol class="journey">
+      <li data-reveal><time>Nov 2021</time><p>Started B.Tech in Electrical &amp; Electronics Engineering, NRI Institute of Technology.</p></li>
+      <li data-reveal><time>May – Jul 2023</time><p>Six weeks of industrial training at the APGENCO Dr. NTTPS thermal power plant.</p></li>
+      <li data-reveal class="win"><time>Sep 2023</time><p><b>1st place</b>, Engineers' Day Project Expo — Farmer Safety System.</p></li>
+      <li data-reveal class="win"><time>2024</time><p><b>1st prize</b>, College Hackathon — Farmer Safety System.</p></li>
+      <li data-reveal class="win"><time>Feb 2025</time><p><b>1st prize</b>, Electrical Project Expo, SUNRISE 2K25 — Smart Railway Junction.</p></li>
+      <li data-reveal><time>Feb 2025</time><p>Began physical-design training at VLSI First, Hyderabad.</p></li>
+      <li data-reveal class="win"><time>Mar – Apr 2025</time><p><b>Paper published</b> in IJSRED.</p></li>
+      <li data-reveal><time>Apr 2025</time><p>Graduated, First Class.</p></li>
+      <li data-reveal><time>Aug 2025</time><p>Completed VLSI First training (project work continued to October).</p></li>
+      <li data-reveal><time>Oct – Dec 2025</time><p>Guardian Band: RTL and the Synopsys flow.</p></li>
+      <li data-reveal><time>Jan 2026</time><p>IVCU-EV: started rebuilding V3 into V4.</p></li>
+      <li data-reveal class="win"><time>Aug 2026</time><p><b>IVCU-EV V4 routed</b>, 0 routing DRC violations.</p></li>
+      <li data-reveal class="now"><time>Now</time><p>Looking for a Physical Design role, and applying for a Master's in semiconductors.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 06 Creative ================= -->
+<section id="creative" class="sec creative" aria-labelledby="creative-h">
+  <div class="wrap creative-grid">
+    <div>
+      <p class="kicker" data-reveal>06 — Creative corner</p>
+      <h2 id="creative-h" class="sec-h" data-reveal><em>Gandiva</em></h2>
+      <p class="sec-sub" data-reveal>Outside chips, I tell stories. Gandiva is my storytelling and creative-technology space — mythology Reels on Instagram, and a blog.</p>
+      <div class="card-links" data-reveal>
+        <a class="btn sm" href="https://www.instagram.com/the_gandiva_/" target="_blank" rel="noopener">Instagram @the_gandiva_ <span aria-hidden="true">↗</span></a>
+        <a class="btn sm" href="https://thegandiva.blogspot.com" target="_blank" rel="noopener">Blog <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+    <svg class="bow" viewBox="0 0 200 200" aria-hidden="true" data-reveal>
+      <path d="M60 20 C150 60 150 140 60 180"/><path class="str" d="M60 20 L60 180"/><path class="arr" d="M30 100 H175 M160 88 L178 100 L160 112"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ================= 07 Contact ================= -->
+<section id="contact" class="sec contact" aria-labelledby="contact-h">
+  <div class="wrap">
+    <p class="kicker" data-reveal>07 — Contact</p>
+    <h2 id="contact-h" class="sec-h" data-reveal>Let's build <em>something.</em></h2>
+    <p class="sec-sub" data-reveal>Open to Physical Design roles and Master's opportunities. Email is the best way to reach me.</p>
+    <a class="mail" href="mailto:mvenky0236@gmail.com" data-reveal>mvenky0236@gmail.com</a>
+    <ul class="socials" data-reveal>
+      <li><a href="https://github.com/Venky-236" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a></li>
+      <!-- TODO: LinkedIn URL from Venky -->
+      <!-- TODO step 13: Résumé (PDF) -->
+      <li><a href="https://www.instagram.com/the_gandiva_/" target="_blank" rel="noopener">Instagram <span aria-hidden="true">↗</span></a></li>
+    </ul>
+  </div>
+</section>
 </main>
 
 <footer class="foot"><div class="wrap">© 2026 Meesala Venkatesh · Built by hand, hosted on GitHub Pages.</div></footer>
