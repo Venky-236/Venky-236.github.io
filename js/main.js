@@ -49,7 +49,8 @@ async function startLenis() {
       const target = id === '#top' ? 0 : document.querySelector(id);
       if (target === null) return;
       e.preventDefault();
-      lenis.scrollTo(target, { offset: 0 });
+      const sticky = document.querySelector('.cs-nav'); // case-study pages keep the nav on screen
+      lenis.scrollTo(target, { offset: sticky ? -sticky.offsetHeight - 8 : 0 });
       if (id !== '#top' && target.focus) {
         target.setAttribute('tabindex', '-1');
         target.focus({ preventScroll: true });

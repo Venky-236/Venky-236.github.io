@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IVCU-EV V4 — Case study · M. Venkatesh</title>
+<meta name="description" content="IVCU-EV V4: a 41-module dual-mode electric-vehicle safety SoC, taken from RTL to a DRC-clean routed layout on SkyWater 130 nm with open-source tools. Idea, plan, build and results.">
+<meta name="theme-color" content="#070608">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.css">
+<link rel="stylesheet" href="css/style.css">
+<script>
+  (function () {
+    var d = document.documentElement;
+    d.classList.add('js', 'no-pl');
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('rm');
+    setTimeout(function () { if (!d.classList.contains('ready')) d.classList.add('ready', 'rm'); }, 3500);
+  })();
+</script>
+</head>
+<body class="cs">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav cs-nav" id="top">
+  <a class="logo" href="index.html" aria-label="M. Venkatesh, back to the portfolio">M<b>V</b>
+    <svg viewBox="0 0 120 20" aria-hidden="true"><path d="M2 16 C40 6 80 4 118 2"/></svg></a>
+  <nav aria-label="Case study">
+    <ul class="links">
+      <li><a href="#idea">Idea</a></li>
+      <li><a href="#plan">Plan</a></li>
+      <li><a href="#build">Build</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#next">Next</a></li>
+    </ul>
+  </nav>
+  <a class="btn" href="index.html#innovations"><span aria-hidden="true">←</span> Portfolio</a>
+</header>
+
+<main id="main">
+<!-- ================= Intro ================= -->
+<section class="cs-hero" aria-labelledby="cs-title">
+  <div class="wrap cs-hero-grid">
+    <div>
+      <p class="kicker" data-reveal>Case study · Independent chip design · Jan – Aug 2026</p>
+      <h1 id="cs-title" class="cs-title" data-reveal>IVCU-EV <em>V4</em></h1>
+      <p class="cs-lede" data-reveal>A dual-mode electric-vehicle safety SoC — one chip that runs a car or a motorcycle — taken from RTL to a <strong>DRC-clean routed layout</strong> on SkyWater 130 nm, using only open-source tools.</p>
+      <dl class="cs-meta" data-reveal>
+        <div><dt>Role</dt><dd>Everything: architecture, RTL, synthesis, physical design</dd></div>
+        <div><dt>Process</dt><dd>SkyWater SKY130 HD (<code>sky130_fd_sc_hd</code>)</dd></div>
+        <div><dt>Tools</dt><dd>Yosys + ABC · OpenSTA · OpenRAM · OpenROAD 26Q3</dd></div>
+        <div><dt>Code</dt><dd><a class="ulink" href="https://github.com/Venky-236/ivcu-ev-v4" target="_blank" rel="noopener">github.com/Venky-236/ivcu-ev-v4 <span aria-hidden="true">↗</span></a></dd></div>
+      </dl>
+    </div>
+    <figure class="cs-hero-img" data-reveal>
+      <img src="img/ivcu/route-full.webp" width="960" height="837" fetchpriority="high" decoding="async"
+           alt="The final routed IVCU-EV layout: dense multicoloured metal wiring filling a 1230 by 1060 micron die around a large rectangular SRAM block.">
+      <figcaption>The routed chip — 1230 × 1060 µm, five metal layers. Rendered from my OpenROAD database.</figcaption>
+    </figure>
+  </div>
+  <ul class="cs-kpis wrap" aria-label="Headline numbers" data-reveal>
+    <li><b>41</b><span>Verilog modules</span></li>
+    <li><b>55,381</b><span>placed instances</span></li>
+    <li><b>61%</b><span>core utilisation</span></li>
+    <li><b>0</b><span>routing DRC violations</span></li>
+  </ul>
+</section>
+
+<!-- ================= 1. Idea ================= -->
+<section id="idea" class="sec cs-sec" aria-labelledby="idea-h">
+  <div class="wrap cs-cols">
+    <header class="cs-head">
+      <p class="step-no" data-reveal>①</p>
+      <h2 id="idea-h" class="sec-h" data-reveal>Idea</h2>
+    </header>
+    <div class="cs-body">
+      <p class="big" data-reveal>After a crash, an electric vehicle's battery pack can still be live — dangerous for the people inside and for whoever comes to help. I wanted a controller whose first job is to make the vehicle safe to touch.</p>
+      <p data-reveal>So the whole chip is designed around one requirement: <strong>cut high voltage within the first 50 ms of a crash</strong>. Around that, it does four more jobs, in priority order:</p>
+      <ol class="prio" data-reveal>
+        <li><b>High-voltage isolation on impact</b> — the first job, above everything else.</li>
+        <li><b>Emergency call</b> — a GPS SOS frame, routed by how severe the crash was.</li>
+        <li><b>Honest sensor health</b> — every one of 64 channels reports <em>why</em> it is unhealthy: out of range, stuck, dead, implausible, or correctly switched off for this vehicle.</li>
+        <li><b>A counted service permit</b> — a limited number of starts after a fault, so the vehicle can reach a workshop.</li>
+        <li><b>Repair classification</b> — a hard-wired answer, per channel, to "who may fix this?"</li>
+      </ol>
+      <div class="callout" data-reveal>
+        <h3>Two vehicles, one die</h3>
+        <p>The same silicon runs as a <strong>car</strong> or a <strong>motorcycle</strong>. It works out which at power-on, from a bonded strap plus the pattern of sensors it sees, and keeps the drivetrain off until the mode is proven. A car uses 62 of the 64 sensor channels; a motorcycle uses 48.</p>
+      </div>
+      <div class="callout" data-reveal>
+        <h3>A safety island nobody can talk out of its job</h3>
+        <p>The high-voltage control sits in its own power domain with <strong>no enable pin</strong>, so no sleep state can switch it off. It is reset only by power-on, so a software reset cannot clear a "contactor welded" fact. And the crash disconnect is plain combinational logic on the outputs, outside any state machine: no processor write and no AI block can command high voltage <em>on</em>.</p>
+      </div>
+      <p class="note" data-reveal>The 50 ms figure is the <em>design requirement</em>. The chip has not been simulated yet (see ⑤ Next), so this page never claims it was measured.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 2. Plan ================= -->
+<section id="plan" class="sec cs-sec" aria-labelledby="plan-h">
+  <div class="wrap cs-cols">
+    <header class="cs-head">
+      <p class="step-no" data-reveal>②</p>
+      <h2 id="plan-h" class="sec-h" data-reveal>Plan</h2>
+    </header>
+    <div class="cs-body">
+      <p class="big" data-reveal>Four clock domains, chosen for safety rather than speed — the safety island runs on the <em>slowest</em> clock, because that is where the timing margin is.</p>
+      <div class="tbl-wrap" data-reveal tabindex="0" role="region" aria-label="Table (scrolls sideways on small screens)">
+        <table class="tbl">
+          <caption>Clock domains</caption>
+          <thead><tr><th scope="col">Clock</th><th scope="col">Frequency</th><th scope="col">What it runs</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><code>clk_aon</code></th><td>10 MHz</td><td>Always-on safety island, mode manager, service permit, HV control</td></tr>
+            <tr><th scope="row"><code>clk_sensor</code></th><td>25 MHz</td><td>64-channel ADC scan, conditioning, plausibility and fault checks</td></tr>
+            <tr><th scope="row"><code>clk_ai</code></th><td>50 MHz</td><td>Seven-block health-scoring cluster</td></tr>
+            <tr><th scope="row"><code>clk_mcu</code></th><td>50 MHz</td><td>APB register file, fault logger + SRAM, service guidance</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p data-reveal>Every signal that crosses between domains goes through a synchroniser, and the scorer has <strong>no divider and no multiplier</strong>: weights are powers of two, so weighting is a shift. A 512 × 32 OpenRAM SRAM holds a 512-entry circular fault log.</p>
+
+      <h3 class="sub" data-reveal>The flow</h3>
+      <ol class="flow" data-reveal aria-label="Design flow">
+        <li><b>Verilog-2001</b><span>41 modules + header</span></li>
+        <li><b>Yosys + ABC</b><span>gate-level netlist</span></li>
+        <li><b>OpenSTA</b><span>constraint checks</span></li>
+        <li><b>OpenRAM</b><span>SRAM macro</span></li>
+        <li><b>OpenROAD</b><span>floorplan → power grid → placement → CTS → routing</span></li>
+      </ol>
+      <p data-reveal>Every physical stage was run by hand in OpenROAD, one command at a time, and saved as a database checkpoint before moving on. My working rule: <strong>verify with a query, not with reasoning</strong> — when a number surprises me, I ask the tool before I build a theory.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 3. Build ================= -->
+<section id="build" class="sec cs-sec" aria-labelledby="build-h">
+  <div class="wrap">
+    <header class="cs-head cs-head-wide">
+      <p class="step-no" data-reveal>③</p>
+      <h2 id="build-h" class="sec-h" data-reveal>Build</h2>
+      <p class="sec-sub" data-reveal>Six stages. The first one took the longest.</p>
+    </header>
+
+    <ol class="timeline">
+      <!-- RTL -->
+      <li class="tl-item tl-major" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card">
+          <p class="tl-tag">Stage 0 · about two months</p>
+          <h3>Rebuilding the RTL until it synthesized clean</h3>
+          <p>Version 3 synthesized and passed timing analysis. But when I started physical design, its problems became visible: 1,344 sensor pins of which 864 were never connected, two SRAMs that could never be read, 42 dividers, a sequential divider sitting on the critical path, and only two clock-domain synchronisers in the whole design.</p>
+          <p>So I went back and re-architected it, module by module — regenerating the RTL, re-running synthesis and re-checking it, again and again, until it came out clean. That work is what made every later stage possible.</p>
+          <div class="tbl-wrap" tabindex="0" role="region" aria-label="Table (scrolls sideways on small screens)">
+            <table class="tbl vs">
+              <caption>Version 3 → Version 4</caption>
+              <thead><tr><th scope="col"></th><th scope="col">V3</th><th scope="col">V4</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Standard-cell area after synthesis</th><td>1,189,022 → 629,098 µm²</td><td><b>322,641 µm²</b></td></tr>
+                <tr><th scope="row">Top-level pins</th><td>1,344 sensor pins, 864 unconnected</td><td><b>237, all connected</b></td></tr>
+                <tr><th scope="row">SRAM macros</th><td>2, unreadable</td><td><b>1, read/write</b></td></tr>
+                <tr><th scope="row">Dividers</th><td>42 + one on the critical path</td><td><b>0</b></td></tr>
+                <tr><th scope="row">Clock-domain synchronisers</th><td>2 in the whole design</td><td><b>On every crossing</b></td></tr>
+                <tr><th scope="row">High-voltage disconnect</th><td>None</td><td><b>Dedicated safety island</b></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="lesson"><b>Two lessons I wrote into rules.</b> Ten constants passed in as module ports stopped synthesis from simplifying the logic and cost about <b>575,000 µm²</b> in the sensor fabric alone — so now every threshold is a compile-time constant. And a time-multiplexed ADC interface replaced 1,344 parallel sensor pins with 21 pins serving all 64 sensors (one full sweep in 10.24 µs), taking the chip boundary down to 237 pins.</p>
+        </div>
+      </li>
+
+      <!-- Synthesis -->
+      <li class="tl-item" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card">
+          <p class="tl-tag">Stage 1 · Synthesis</p>
+          <h3>Yosys + ABC against a filtered library</h3>
+          <p>I filtered the SkyWater library down to 355 cells — removing special-purpose and delay cells the flow shouldn't use — then synthesized: <b>38,238 instances</b>, <b>322,640.7 µm²</b> of standard cells (38% of it flip-flops), in 32.7 seconds. A script checks nine structural rules on every build — for example, no <code>/</code> or <code>%</code> anywhere, and every cross-domain signal through a synchroniser.</p>
+        </div>
+      </li>
+
+      <!-- Floorplan -->
+      <li class="tl-item" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card tl-split">
+          <div>
+            <p class="tl-tag">Stage 2 · Floorplan</p>
+            <h3>A 1230 × 1060 µm die around one big memory</h3>
+            <p>The SRAM is 696 × 411 µm — almost a quarter of the die — so it was placed first and locked, with a 40 µm halo kept free of cells. The 237 pins sit on the die edge; the boundary rework gave each pin about 24.6 µm of edge instead of 4.3.</p>
+            <p>Standard-cell rows were cut around the macro: 541 rows, 10,380 tap cells and 2,134 endcaps.</p>
+          </div>
+          <figure class="fp-fig">
+            <svg viewBox="-40 -40 1310 1140" role="img" aria-labelledby="fp-t fp-d">
+              <title id="fp-t">Floorplan drawn to scale</title>
+              <desc id="fp-d">A 1230 by 1060 micron die with a 40 micron core margin. The 696 by 411 micron SRAM sits in the upper middle with a 40 micron halo around it. Pin groups sit on all four edges.</desc>
+              <g transform="translate(0 1060) scale(1 -1)">
+                <rect class="fp-die" x="0" y="0" width="1230" height="1060"/>
+                <rect class="fp-core" x="40.02" y="40.8" width="1149.54" height="979.2"/>
+                <rect class="fp-halo" x="227.07" y="438.76" width="776.02" height="491.24"/>
+                <rect class="fp-macro" x="267.07" y="478.76" width="696.02" height="411.24"/>
+                <g class="fp-pins">
+                  <rect x="569" y="1060" width="74" height="18"/>
+                  <rect x="588" y="-18" width="240" height="18"/>
+                  <rect x="-18" y="471" width="18" height="118"/>
+                  <rect x="-18" y="877" width="18" height="18"/>
+                  <rect x="1230" y="449" width="18" height="162"/>
+                </g>
+              </g>
+              <text class="fp-lbl" x="615" y="384" text-anchor="middle">SRAM 512 × 32</text>
+              <text class="fp-sub" x="615" y="420" text-anchor="middle">696 × 411 µm</text>
+              <text class="fp-sub" x="615" y="800" text-anchor="middle">standard cells</text>
+              <text class="fp-dim" x="615" y="1095" text-anchor="middle">1230 µm</text>
+              <text class="fp-dim" x="-24" y="530" text-anchor="middle" transform="rotate(-90 -24 530)">1060 µm</text>
+            </svg>
+            <figcaption>Diagram drawn to scale from the floorplan numbers (pin groups approximate). Not a tool screenshot.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <!-- PDN -->
+      <li class="tl-item" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card tl-split">
+          <div>
+            <p class="tl-tag">Stage 3 · Power grid</p>
+            <h3>The grid that said 100% of it was unconnected</h3>
+            <p>The power grid uses metal-1 rails along every row, plus straps on metal 4 and 5. The first check reported <b>every single shape</b> on both power nets as unconnected — 1,960 on VDD and 2,492 on VSS.</p>
+            <p>That exact match was the clue: a real break leaves <em>some</em> shapes connected. The cause was 151 metal-1 rails drawn straight through the SRAM's own blockage, because rows had not been cut around it. Cutting the rows first fixed it — both nets then reported "all shapes connected".</p>
+          </div>
+          <figure class="shot">
+            <img src="img/ivcu/pdn-full.webp" width="960" height="837" loading="lazy" decoding="async"
+                 alt="The finished power grid: red metal-1 rails across the die with vertical and horizontal straps, and a clean gap around the SRAM block.">
+            <figcaption>Power grid with the rows cut around the SRAM. Rendered from my OpenROAD database.</figcaption>
+          </figure>
+        </div>
+      </li>
+
+      <!-- Placement + CTS -->
+      <li class="tl-item" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card">
+          <p class="tl-tag">Stage 4 · Placement, clock tree &amp; hold</p>
+          <h3>A −1.094 ns hold failure that wasn't the clock tree</h3>
+          <p>After placement, the clock tree tool built five clock nets with <b>427 clock buffers</b> feeding 4,938 sinks. Clock arrival ranged from 1.0 to 1.28 ns, with real skew between 0.019 and 0.145 ns.</p>
+          <p>Then hold timing read <b>−1.094 ns</b>. Skew could explain at most about 0.09 ns of that, so I asked the tool one question: are there any failing register-to-register paths? The answer was <em>none</em>. All 278 failing paths started at input pins whose constraint claimed an outside chip could change its data at the exact instant of the clock edge — something no real chip can do.</p>
+          <p>I corrected that constraint to a realistic 0.5 ns, and repaired the rest physically: <b>302 hold buffers, +0.2% area, zero setup cost</b>, because every buffer landed on a path with time to spare.</p>
+          <div class="shots-2">
+            <figure class="shot">
+              <img src="img/ivcu/cts-nets.jpg" width="960" height="857" loading="lazy" decoding="async"
+                   alt="Clock nets right after clock tree synthesis: coloured buffer trees fanning out to flip-flops around the SRAM block.">
+              <figcaption>Clock buffers fanning out to flip-flops after CTS. Screenshot, Aug 2026.</figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="img/ivcu/cts-tree.jpg" width="800" height="690" loading="lazy" decoding="async"
+                   alt="OpenROAD clock tree viewer for the 25 MHz sensor clock: a balanced tree with sink arrival times between about 1.0 and 1.3 nanoseconds.">
+              <figcaption>Clock tree viewer, <code>clk_sensor</code>. Screenshot, Aug 2026.</figcaption>
+            </figure>
+          </div>
+          <div class="tbl-wrap" tabindex="0" role="region" aria-label="Table (scrolls sideways on small screens)">
+            <table class="tbl">
+              <caption>Clock tree after hold repair (estimated wiring)</caption>
+              <thead><tr><th scope="col">Clock</th><th scope="col">Period</th><th scope="col">Insertion delay</th><th scope="col">Setup skew</th></tr></thead>
+              <tbody>
+                <tr><th scope="row"><code>clk_ai</code></th><td>20 ns</td><td>1.002 ns</td><td>0.019 ns</td></tr>
+                <tr><th scope="row"><code>clk_mcu</code></th><td>20 ns</td><td>1.131 ns</td><td>0.024 ns</td></tr>
+                <tr><th scope="row"><code>clk_sensor</code></th><td>40 ns</td><td>1.284 ns</td><td>0.093 ns</td></tr>
+                <tr><th scope="row"><code>clk_aon</code></th><td>100 ns</td><td>1.143 ns</td><td>0.145 ns</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </li>
+
+      <!-- Routing -->
+      <li class="tl-item" data-reveal>
+        <div class="tl-dot" aria-hidden="true"></div>
+        <div class="tl-card">
+          <p class="tl-tag">Stage 5 · Routing</p>
+          <h3>28,340 violations to zero</h3>
+          <p>Global routing found <b>zero overflow</b> on all five metal layers, and stayed at zero even when I removed 30% of the routing tracks as a stress test — the router simply climbed to the upper layers, which were nearly empty.</p>
+          <p>Detailed routing started with 28,340 design-rule violations and cleaned them up pass by pass, to <b>0</b> on the ninth.</p>
+          <figure class="drc drc-big">
+            <figcaption>Detailed routing: violations per pass <span>(log scale; from my routing log)</span></figcaption>
+            <svg viewBox="0 0 300 120" role="img" aria-labelledby="drc2-t drc2-d" class="drc-svg">
+              <title id="drc2-t">Routing violations fell from 28,340 to 0 in 9 passes</title>
+              <desc id="drc2-d">Pass 0: 28,340. Pass 1: 15,591. Pass 2: 13,739. Pass 3: 2,200. Pass 4: 264. Pass 5: 61. Pass 6: 10. Pass 7: 6. Pass 8: 6. Pass 9: 0.</desc>
+              <g class="drc-grid"><line x1="20" y1="100" x2="290" y2="100"/><line x1="20" y1="10" x2="20" y2="100"/></g>
+              <polyline class="drc-line" points="20,10 50,15.2 80,16.4 110,32.4 140,51 170,63.8 200,79 230,82.9 260,82.9 290,100"/>
+              <g class="drc-dots"><circle cx="20" cy="10" r="2.6"/><circle cx="50" cy="15.2" r="2.6"/><circle cx="80" cy="16.4" r="2.6"/><circle cx="110" cy="32.4" r="2.6"/><circle cx="140" cy="51" r="2.6"/><circle cx="170" cy="63.8" r="2.6"/><circle cx="200" cy="79" r="2.6"/><circle cx="230" cy="82.9" r="2.6"/><circle cx="260" cy="82.9" r="2.6"/><circle class="zero" cx="290" cy="100" r="3.6"/></g>
+              <text x="24" y="16" class="drc-lbl">28,340</text>
+              <text x="290" y="92" class="drc-lbl" text-anchor="end">0</text>
+              <text x="20" y="114" class="drc-ax">pass 0</text>
+              <text x="290" y="114" class="drc-ax" text-anchor="end">pass 9</text>
+            </svg>
+          </figure>
+          <div class="shots-2">
+            <figure class="shot">
+              <img src="img/ivcu/route-macro.webp" width="959" height="576" loading="lazy" decoding="async"
+                   alt="Close-up of routing at the lower-left corner of the SRAM: wires jog around the macro edge into the standard-cell area.">
+              <figcaption>Routing at the SRAM corner. Rendered from my OpenROAD database.</figcaption>
+            </figure>
+            <figure class="shot">
+              <img src="img/ivcu/route-detail.webp" width="960" height="576" loading="lazy" decoding="async"
+                   alt="Close-up of a 100 by 60 micron patch of finished routing: thin wires on alternating horizontal and vertical layers with wider straps.">
+              <figcaption>A 100 × 60 µm patch of finished routing. Rendered from my OpenROAD database.</figcaption>
+            </figure>
+          </div>
+          <p class="lesson"><b>A tool reporting success is not proof it worked.</b> Before routing, tie-off cells were inserted and the tool said "done" — but it had placed them at (0, 0), and the legaliser silently skipped them. Only a placement check caught it.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ================= 4. Results ================= -->
+<section id="results" class="sec cs-sec" aria-labelledby="results-h">
+  <div class="wrap cs-cols">
+    <header class="cs-head">
+      <p class="step-no" data-reveal>④</p>
+      <h2 id="results-h" class="sec-h" data-reveal>Results</h2>
+    </header>
+    <div class="cs-body">
+      <div class="tbl-wrap" data-reveal tabindex="0" role="region" aria-label="Table (scrolls sideways on small screens)">
+        <table class="tbl results">
+          <caption>Every number comes from a tool report or log in the project</caption>
+          <tbody>
+            <tr class="grp"><th colspan="2" scope="colgroup">Design</th></tr>
+            <tr><th scope="row">RTL</th><td>41 Verilog-2001 modules + header</td></tr>
+            <tr><th scope="row">Sensor channels</th><td>64 (62 used in car mode, 48 in motorcycle mode)</td></tr>
+            <tr><th scope="row">Clock domains</th><td>4 asynchronous: 10 / 25 / 50 / 50 MHz</td></tr>
+            <tr><th scope="row">Top-level pins</th><td>237, all connected</td></tr>
+            <tr class="grp"><th colspan="2" scope="colgroup">Synthesis</th></tr>
+            <tr><th scope="row">Instances</th><td>38,238</td></tr>
+            <tr><th scope="row">Standard-cell area</th><td>322,640.7 µm²</td></tr>
+            <tr><th scope="row">Runtime</th><td>32.7 s</td></tr>
+            <tr class="grp"><th colspan="2" scope="colgroup">Physical design</th></tr>
+            <tr><th scope="row">Die</th><td>1230 × 1060 µm</td></tr>
+            <tr><th scope="row">SRAM macro</th><td>512 × 32, 696.02 × 411.235 µm</td></tr>
+            <tr><th scope="row">Placed instances</th><td>55,381 (55,378 standard cells + 1 macro + 2 tie cells)</td></tr>
+            <tr><th scope="row">Utilisation</th><td>61% (682,435 µm²)</td></tr>
+            <tr><th scope="row">Clock tree</th><td>427 clock buffers · 4,938 sinks · 5 clock nets</td></tr>
+            <tr class="grp"><th colspan="2" scope="colgroup">Timing <span>(after CTS, on estimated wiring)</span></th></tr>
+            <tr><th scope="row">Worst setup slack</th><td><b>+7.951 ns</b>, 0 violations</td></tr>
+            <tr><th scope="row">Worst hold slack</th><td><b>+0.045 ns</b>, 0 violations</td></tr>
+            <tr><th scope="row">Hold buffers</th><td>302, +0.2% area, zero setup cost</td></tr>
+            <tr class="grp"><th colspan="2" scope="colgroup">Routing</th></tr>
+            <tr><th scope="row">Global routing overflow</th><td><b>0</b> on all five layers (also 0 with 30% fewer tracks)</td></tr>
+            <tr><th scope="row">Detailed routing violations</th><td><b>0</b> (from 28,340, in 9 passes)</td></tr>
+            <tr><th scope="row">Routed wire length</th><td>2,092,386 µm</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 5. Next ================= -->
+<section id="next" class="sec cs-sec" aria-labelledby="next-h">
+  <div class="wrap cs-cols">
+    <header class="cs-head">
+      <p class="step-no" data-reveal>⑤</p>
+      <h2 id="next-h" class="sec-h" data-reveal>Next</h2>
+    </header>
+    <div class="cs-body">
+      <p class="big" data-reveal>A project that lists no open issues usually has more. These are mine, in the order I'll fix them:</p>
+      <ol class="prio open" data-reveal>
+        <li><b>A functional testbench.</b> The RTL is linted, rule-checked and physically built — but not yet simulated. This is the top item.</li>
+        <li><b>Synchronise the GPS input.</b> One input crossing still skips a synchroniser; fixing it costs about a dozen flip-flops.</li>
+        <li><b>A single-port SRAM.</b> The macro is dual-port, but only one port is used.</li>
+        <li><b>Characterise the SRAM's timing model.</b> The generated memory model has placeholder tables.</li>
+        <li><b>Check two constant outputs.</b> Synthesis tied two output bits to zero; simulation will show whether that is intended.</li>
+      </ol>
+      <div class="cs-end" data-reveal>
+        <a class="btn solid" href="https://github.com/Venky-236/ivcu-ev-v4" target="_blank" rel="noopener">See the code on GitHub <span aria-hidden="true">↗</span></a>
+        <a class="btn" href="index.html#innovations"><span aria-hidden="true">←</span> Back to the portfolio</a>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap">© 2026 Meesala Venkatesh · Built by hand, hosted on GitHub Pages.</div></footer>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
