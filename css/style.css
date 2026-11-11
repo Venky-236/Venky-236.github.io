@@ -116,8 +116,8 @@ blockquote::after{content:"";display:block;width:6rem;height:2px;margin:1rem 0 0
 
 /* stats (glass bar) */
 .stats{position:relative;z-index:4;margin:1.2rem calc(var(--gutter) + 1.5vw) 1rem;display:grid;grid-template-columns:repeat(4,1fr);
-  border:1px solid rgba(255,70,70,.35);border-radius:.9rem;background:linear-gradient(180deg,rgba(30,6,6,.5),rgba(12,4,4,.72));
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:1.15rem 0}
+  border:1px solid rgba(255,70,70,.35);border-radius:.9rem;background:linear-gradient(180deg,rgba(30,6,6,.78),rgba(12,4,4,.9));
+  padding:1.15rem 0}  /* no backdrop-filter blur: it cost ~10 Lighthouse points on phones */
 .stat{text-align:center;position:relative;padding:0 .8rem}
 .stat+.stat::before{content:"";position:absolute;left:0;top:15%;bottom:15%;width:1px;background:rgba(255,80,80,.4)}
 .stat b{display:block;font-size:clamp(1.9rem,2.6vw,2.5rem);font-weight:800;line-height:1.15;color:var(--red);letter-spacing:-.01em;text-shadow:0 0 18px rgba(255,30,30,.35)}
@@ -134,7 +134,8 @@ blockquote::after{content:"";display:block;width:6rem;height:2px;margin:1rem 0 0
 
 /* ---------- placeholder sections (built in later steps) ---------- */
 .wrap{max-width:1200px;margin:0 auto;padding:0 var(--gutter)}
-.sec{padding:clamp(4.5rem,9vw,9rem) 0;border-top:1px solid var(--line)}
+.sec{padding:clamp(4.5rem,9vw,9rem) 0;border-top:1px solid var(--line);
+  content-visibility:auto;contain-intrinsic-size:auto 1100px}  /* skip layout of off-screen sections until needed */
 .sec-h{font-family:var(--serif);font-style:italic;font-weight:700;font-size:clamp(2rem,4vw,3.2rem)}
 .mail{display:inline-block;margin-top:1rem;font-size:clamp(1.2rem,3vw,2rem);font-weight:600;color:var(--red);border-bottom:2px solid currentColor;word-break:break-all}
 .foot{padding:2rem 0;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
@@ -208,7 +209,7 @@ html:not(.js) .preloader,html.no-pl .preloader{display:none}
 .pl-routes path:nth-child(2){animation-delay:.08s}.pl-routes path:nth-child(3){animation-delay:.16s}
 .pl-routes path:nth-child(4){animation-delay:.24s}.pl-routes path:nth-child(5){animation-delay:.12s;opacity:.35}
 @keyframes pl-draw{to{stroke-dashoffset:0}}
-.pl-count{position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--ink-2);display:flex;align-items:baseline;gap:.6rem}
+.pl-count{contain:layout style paint;position:relative;font-family:var(--serif);font-style:italic;font-size:clamp(1.4rem,3vw,2.2rem);color:var(--ink-2);display:flex;align-items:baseline;gap:.6rem}
 .pl-count b{font-family:var(--sans);font-style:normal;font-weight:800;font-size:clamp(2.8rem,8vw,5.5rem);color:var(--red);
   font-variant-numeric:tabular-nums;min-width:4ch;text-align:right;text-shadow:0 0 24px var(--red-glow)}
 
@@ -397,8 +398,8 @@ html.js:not(.rm) .feat-card.in .drc-line{stroke-dashoffset:0}
 /* ==========================================================================
    Step 8 — IVCU case study (ivcu.html)
    ========================================================================== */
-html:has(.cs-nav){scroll-padding-top:6rem}
-.cs-nav{position:sticky;top:0;background:rgba(7,6,8,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+html.cs-page{scroll-padding-top:6rem}   /* plain class, not :has() — :has on <html> re-checks the whole page on every change */
+.cs-nav{position:sticky;top:0;background:rgba(7,6,8,.95);border-bottom:1px solid var(--line)}  /* solid, not blurred: see .stats */
 .cs code,.tbl code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.9em;color:var(--red-soft)}
 .ulink{color:var(--ink);border-bottom:1px solid rgba(255,60,60,.6)}
 .ulink:hover{color:var(--red)}
@@ -458,6 +459,7 @@ html:has(.cs-nav){scroll-padding-top:6rem}
 .tbl.vs td:last-child{color:var(--ink)}
 .tbl.results tbody th{width:42%;font-weight:500;color:var(--muted)}
 .tbl.results tr.grp th{padding-top:1.1rem;color:var(--red);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:700;background:rgba(255,30,30,.04)}
+.tbl.results tr.grp td{background:rgba(255,30,30,.04);border-top:1px solid var(--line)}
 .tbl.results tr.grp th span{color:var(--muted);text-transform:none;letter-spacing:0;font-weight:500}
 
 .flow{display:flex;flex-wrap:wrap;gap:.6rem;counter-reset:none}

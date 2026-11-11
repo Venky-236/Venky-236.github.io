@@ -8,7 +8,11 @@
 <meta name="theme-color" content="#070608">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070608'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='34' fill='%23f4efe8'%3EM%3Ctspan fill='%23ff2a2a'%3EV%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<!-- Fonts load without blocking the first paint; fallback fonts show for a moment -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="css/style.css">
 <script>
   // Runs before paint: decide whether to show the preloader and motion.
@@ -38,7 +42,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav" id="top">
-  <a class="logo" href="#top" aria-label="M. Venkatesh, home">M<b>V</b>
+  <a class="logo" href="#top" aria-label="MV — M. Venkatesh, home">M<b>V</b>
     <svg viewBox="0 0 120 20" aria-hidden="true"><path d="M2 16 C40 6 80 4 118 2"/></svg></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-links">
     <span class="menu-ic" aria-hidden="true"><i></i><i></i></span><span class="menu-txt">Menu</span>
@@ -195,22 +199,22 @@
       <!-- ===== IVCU in layout: real renders / screenshots ===== -->
       <div class="layout-strip" data-reveal aria-label="IVCU-EV V4 in layout">
         <figure>
-          <img src="img/ivcu/pdn-full.webp" width="960" height="837" loading="lazy" decoding="async"
+          <img src="img/ivcu/pdn-full.webp" srcset="img/ivcu/pdn-full-640.webp 640w, img/ivcu/pdn-full.webp 960w" sizes="(max-width: 1100px) 50vw, 280px" width="960" height="837" loading="lazy" decoding="async"
                alt="Power grid of the IVCU-EV chip: dense horizontal red metal-1 rails with vertical and horizontal straps, cut away around the large SRAM block in the upper middle.">
           <figcaption><b>Power grid</b>Metal-1 rails plus met4/met5 straps, rows cut around the SRAM.<small>Rendered from my OpenROAD database</small></figcaption>
         </figure>
         <figure>
-          <img src="img/ivcu/cts-nets.jpg" width="960" height="857" loading="lazy" decoding="async"
+          <img src="img/ivcu/cts-nets.jpg" srcset="img/ivcu/cts-nets-640.jpg 640w, img/ivcu/cts-nets.jpg 960w" sizes="(max-width: 1100px) 50vw, 280px" width="960" height="857" loading="lazy" decoding="async"
                alt="Clock nets right after clock tree synthesis: coloured buffer trees fanning out to flip-flops around the SRAM block.">
           <figcaption><b>Clock tree</b>Each clock's buffers fanning out to its flip-flops after CTS.<small>Screenshot from my OpenROAD session, Aug 2026</small></figcaption>
         </figure>
         <figure>
-          <img src="img/ivcu/cts-tree.jpg" width="800" height="690" loading="lazy" decoding="async"
+          <img src="img/ivcu/cts-tree.jpg" srcset="img/ivcu/cts-tree-640.jpg 640w, img/ivcu/cts-tree.jpg 800w" sizes="(max-width: 1100px) 50vw, 280px" width="800" height="690" loading="lazy" decoding="async"
                alt="OpenROAD clock tree viewer for the 25 MHz sensor clock: a balanced buffer tree with sink arrival times between about 1.0 and 1.3 nanoseconds.">
           <figcaption><b>Clock tree viewer</b>clk_sensor: sinks arrive between ~1.0 and 1.3 ns.<small>Screenshot from my OpenROAD session, Aug 2026</small></figcaption>
         </figure>
         <figure>
-          <img src="img/ivcu/route-full.webp" width="960" height="837" loading="lazy" decoding="async"
+          <img src="img/ivcu/route-full.webp" srcset="img/ivcu/route-full-640.webp 640w, img/ivcu/route-full.webp 960w" sizes="(max-width: 1100px) 50vw, 280px" width="960" height="837" loading="lazy" decoding="async"
                alt="Final routed layout of the IVCU-EV chip: thousands of red, green, yellow and pink metal wires filling the die around the SRAM block.">
           <figcaption><b>Routed</b>Five metal layers, 0 routing DRC violations.<small>Rendered from my OpenROAD database</small></figcaption>
         </figure>

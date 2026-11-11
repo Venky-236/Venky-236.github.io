@@ -25,7 +25,7 @@ function runPreloader() {
       try { sessionStorage.setItem('mv-preloaded', '1'); } catch (e) { /* private mode: fine */ }
       pl.classList.add('done');
       setTimeout(resolve, 250); // start the hero intro while the wipe is still moving
-    }, 33);
+    }, 50);
   });
 }
 
@@ -34,6 +34,12 @@ const LENIS_URL = 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.mjs';
 let lenis = null;
 async function startLenis() {
   if (reduced) return;
+  // Phones/tablets: native touch scrolling is smoother and costs nothing.
+  if (matchMedia('(pointer: coarse)').matches) return;
+  // Desktop: wait until the page has loaded and the browser is idle, so the
+  // library's first measurement doesn't compete with the first paint.
+  if (document.readyState !== 'complete') await new Promise((r) => addEventListener('load', r, { once: true }));
+  await new Promise((r) => (window.requestIdleCallback ? requestIdleCallback(r, { timeout: 1500 }) : setTimeout(r, 300)));
   let Lenis;
   try { ({ default: Lenis } = await import(LENIS_URL)); }
   catch (e) { return; } // CDN blocked or offline → normal browser scrolling

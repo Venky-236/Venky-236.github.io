@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="cs-page">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -8,7 +8,10 @@
 <meta name="theme-color" content="#070608">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23070608'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Georgia,serif' font-style='italic' font-weight='700' font-size='34' fill='%23f4efe8'%3EM%3Ctspan fill='%23ff2a2a'%3EV%3C/tspan%3E%3C/text%3E%3C/svg%3E">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600..800;1,600..800&family=Inter:wght@400..800&display=swap" rel="stylesheet"></noscript>
 <link rel="stylesheet" href="css/style.css">
 <script>
   (function () {
@@ -23,7 +26,7 @@
 <a class="skip" href="#main">Skip to content</a>
 
 <header class="nav cs-nav" id="top">
-  <a class="logo" href="index.html" aria-label="M. Venkatesh, back to the portfolio">M<b>V</b>
+  <a class="logo" href="index.html" aria-label="MV — M. Venkatesh, back to the portfolio">M<b>V</b>
     <svg viewBox="0 0 120 20" aria-hidden="true"><path d="M2 16 C40 6 80 4 118 2"/></svg></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-links">
     <span class="menu-ic" aria-hidden="true"><i></i><i></i></span><span class="menu-txt">Menu</span>
@@ -45,23 +48,23 @@
 <section class="cs-hero" aria-labelledby="cs-title">
   <div class="wrap cs-hero-grid">
     <div>
-      <p class="kicker" data-reveal>Case study · Independent chip design · Jan – Aug 2026</p>
-      <h1 id="cs-title" class="cs-title" data-reveal>IVCU-EV <em>V4</em></h1>
-      <p class="cs-lede" data-reveal>A dual-mode electric-vehicle safety SoC — one chip that runs a car or a motorcycle — taken from RTL to a <strong>DRC-clean routed layout</strong> on SkyWater 130 nm, using only open-source tools.</p>
-      <dl class="cs-meta" data-reveal>
+      <p class="kicker">Case study · Independent chip design · Jan – Aug 2026</p>
+      <h1 id="cs-title" class="cs-title">IVCU-EV <em>V4</em></h1>
+      <p class="cs-lede">A dual-mode electric-vehicle safety SoC — one chip that runs a car or a motorcycle — taken from RTL to a <strong>DRC-clean routed layout</strong> on SkyWater 130 nm, using only open-source tools.</p>
+      <dl class="cs-meta">
         <div><dt>Role</dt><dd>Everything: architecture, RTL, synthesis, physical design</dd></div>
         <div><dt>Process</dt><dd>SkyWater SKY130 HD (<code>sky130_fd_sc_hd</code>)</dd></div>
         <div><dt>Tools</dt><dd>Yosys + ABC · OpenSTA · OpenRAM · OpenROAD 26Q3</dd></div>
         <div><dt>Code</dt><dd><a class="ulink" href="https://github.com/Venky-236/ivcu-ev-v4" target="_blank" rel="noopener">github.com/Venky-236/ivcu-ev-v4 <span aria-hidden="true">↗</span></a></dd></div>
       </dl>
     </div>
-    <figure class="cs-hero-img" data-reveal>
-      <img src="img/ivcu/route-full.webp" width="960" height="837" fetchpriority="high" decoding="async"
+    <figure class="cs-hero-img">
+      <img src="img/ivcu/route-full.webp" srcset="img/ivcu/route-full-640.webp 640w, img/ivcu/route-full.webp 960w" sizes="(max-width: 1000px) 100vw, 560px" width="960" height="837" fetchpriority="high" decoding="async"
            alt="The final routed IVCU-EV layout: dense multicoloured metal wiring filling a 1230 by 1060 micron die around a large rectangular SRAM block.">
       <figcaption>The routed chip — 1230 × 1060 µm, five metal layers. Rendered from my OpenROAD database.</figcaption>
     </figure>
   </div>
-  <ul class="cs-kpis wrap" aria-label="Headline numbers" data-reveal>
+  <ul class="cs-kpis wrap" aria-label="Headline numbers">
     <li><b>41</b><span>Verilog modules</span></li>
     <li><b>55,381</b><span>placed instances</span></li>
     <li><b>61%</b><span>core utilisation</span></li>
@@ -230,7 +233,7 @@
             <p>That exact match was the clue: a real break leaves <em>some</em> shapes connected. The cause was 151 metal-1 rails drawn straight through the SRAM's own blockage, because rows had not been cut around it. Cutting the rows first fixed it — both nets then reported "all shapes connected".</p>
           </div>
           <figure class="shot">
-            <img src="img/ivcu/pdn-full.webp" width="960" height="837" loading="lazy" decoding="async"
+            <img src="img/ivcu/pdn-full.webp" srcset="img/ivcu/pdn-full-640.webp 640w, img/ivcu/pdn-full.webp 960w" sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 480px" width="960" height="837" loading="lazy" decoding="async"
                  alt="The finished power grid: red metal-1 rails across the die with vertical and horizontal straps, and a clean gap around the SRAM block.">
             <figcaption>Power grid with the rows cut around the SRAM. Rendered from my OpenROAD database.</figcaption>
           </figure>
@@ -248,12 +251,12 @@
           <p>I corrected that constraint to a realistic 0.5 ns, and repaired the rest physically: <b>302 hold buffers, +0.2% area, zero setup cost</b>, because every buffer landed on a path with time to spare.</p>
           <div class="shots-2">
             <figure class="shot">
-              <img src="img/ivcu/cts-nets.jpg" width="960" height="857" loading="lazy" decoding="async"
+              <img src="img/ivcu/cts-nets.jpg" srcset="img/ivcu/cts-nets-640.jpg 640w, img/ivcu/cts-nets.jpg 960w" sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 480px" width="960" height="857" loading="lazy" decoding="async"
                    alt="Clock nets right after clock tree synthesis: coloured buffer trees fanning out to flip-flops around the SRAM block.">
               <figcaption>Clock buffers fanning out to flip-flops after CTS. Screenshot, Aug 2026.</figcaption>
             </figure>
             <figure class="shot">
-              <img src="img/ivcu/cts-tree.jpg" width="800" height="690" loading="lazy" decoding="async"
+              <img src="img/ivcu/cts-tree.jpg" srcset="img/ivcu/cts-tree-640.jpg 640w, img/ivcu/cts-tree.jpg 800w" sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 480px" width="800" height="690" loading="lazy" decoding="async"
                    alt="OpenROAD clock tree viewer for the 25 MHz sensor clock: a balanced tree with sink arrival times between about 1.0 and 1.3 nanoseconds.">
               <figcaption>Clock tree viewer, <code>clk_sensor</code>. Screenshot, Aug 2026.</figcaption>
             </figure>
@@ -297,12 +300,12 @@
           </figure>
           <div class="shots-2">
             <figure class="shot">
-              <img src="img/ivcu/route-macro.webp" width="959" height="576" loading="lazy" decoding="async"
+              <img src="img/ivcu/route-macro.webp" srcset="img/ivcu/route-macro-640.webp 640w, img/ivcu/route-macro.webp 959w" sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 480px" width="959" height="576" loading="lazy" decoding="async"
                    alt="Close-up of routing at the lower-left corner of the SRAM: wires jog around the macro edge into the standard-cell area.">
               <figcaption>Routing at the SRAM corner. Rendered from my OpenROAD database.</figcaption>
             </figure>
             <figure class="shot">
-              <img src="img/ivcu/route-detail.webp" width="960" height="576" loading="lazy" decoding="async"
+              <img src="img/ivcu/route-detail.webp" srcset="img/ivcu/route-detail-640.webp 640w, img/ivcu/route-detail.webp 960w" sizes="(max-width: 640px) 100vw, (max-width: 1000px) 50vw, 480px" width="960" height="576" loading="lazy" decoding="async"
                    alt="Close-up of a 100 by 60 micron patch of finished routing: thin wires on alternating horizontal and vertical layers with wider straps.">
               <figcaption>A 100 × 60 µm patch of finished routing. Rendered from my OpenROAD database.</figcaption>
             </figure>
@@ -326,26 +329,26 @@
         <table class="tbl results">
           <caption>Every number comes from a tool report or log in the project</caption>
           <tbody>
-            <tr class="grp"><th colspan="2" scope="colgroup">Design</th></tr>
+            <tr class="grp"><th scope="rowgroup">Design</th><td></td></tr>
             <tr><th scope="row">RTL</th><td>41 Verilog-2001 modules + header</td></tr>
             <tr><th scope="row">Sensor channels</th><td>64 (62 used in car mode, 48 in motorcycle mode)</td></tr>
             <tr><th scope="row">Clock domains</th><td>4 asynchronous: 10 / 25 / 50 / 50 MHz</td></tr>
             <tr><th scope="row">Top-level pins</th><td>237, all connected</td></tr>
-            <tr class="grp"><th colspan="2" scope="colgroup">Synthesis</th></tr>
+            <tr class="grp"><th scope="rowgroup">Synthesis</th><td></td></tr>
             <tr><th scope="row">Instances</th><td>38,238</td></tr>
             <tr><th scope="row">Standard-cell area</th><td>322,640.7 µm²</td></tr>
             <tr><th scope="row">Runtime</th><td>32.7 s</td></tr>
-            <tr class="grp"><th colspan="2" scope="colgroup">Physical design</th></tr>
+            <tr class="grp"><th scope="rowgroup">Physical design</th><td></td></tr>
             <tr><th scope="row">Die</th><td>1230 × 1060 µm</td></tr>
             <tr><th scope="row">SRAM macro</th><td>512 × 32, 696.02 × 411.235 µm</td></tr>
             <tr><th scope="row">Placed instances</th><td>55,381 (55,378 standard cells + 1 macro + 2 tie cells)</td></tr>
             <tr><th scope="row">Utilisation</th><td>61% (682,435 µm²)</td></tr>
             <tr><th scope="row">Clock tree</th><td>427 clock buffers · 4,938 sinks · 5 clock nets</td></tr>
-            <tr class="grp"><th colspan="2" scope="colgroup">Timing <span>(after CTS, on estimated wiring)</span></th></tr>
+            <tr class="grp"><th scope="rowgroup">Timing <span>(after CTS, on estimated wiring)</span></th><td></td></tr>
             <tr><th scope="row">Worst setup slack</th><td><b>+7.951 ns</b>, 0 violations</td></tr>
             <tr><th scope="row">Worst hold slack</th><td><b>+0.045 ns</b>, 0 violations</td></tr>
             <tr><th scope="row">Hold buffers</th><td>302, +0.2% area, zero setup cost</td></tr>
-            <tr class="grp"><th colspan="2" scope="colgroup">Routing</th></tr>
+            <tr class="grp"><th scope="rowgroup">Routing</th><td></td></tr>
             <tr><th scope="row">Global routing overflow</th><td><b>0</b> on all five layers (also 0 with 30% fewer tracks)</td></tr>
             <tr><th scope="row">Detailed routing violations</th><td><b>0</b> (from 28,340, in 9 passes)</td></tr>
             <tr><th scope="row">Routed wire length</th><td>2,092,386 µm</td></tr>
