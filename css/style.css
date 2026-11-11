@@ -1,3 +1,9 @@
+/* Self-hosted variable fonts (SIL Open Font License 1.1 — see fonts/NOTICE.txt).
+   One file covers every weight, so text never re-lays out per weight. */
+@font-face{font-family:"Inter";src:url("../fonts/inter-var.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url("../fonts/playfair-var.woff2") format("woff2");font-weight:600 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url("../fonts/playfair-italic-var.woff2") format("woff2");font-weight:600 800;font-style:italic;font-display:swap}
+
 /* ==========================================================================
    M. Venkatesh — portfolio
    Tokens first. The accent is ONE variable (--red) so it can be swapped.

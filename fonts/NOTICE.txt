@@ -1,0 +1,12 @@
+Fonts in this folder (latin subset, variable WOFF2, downloaded from Google Fonts on 11 Nov 2026)
+
+inter-var.woff2
+  Inter — Copyright 2020 The Inter Project Authors (https://github.com/rsms/inter)
+
+playfair-var.woff2, playfair-italic-var.woff2
+  Playfair Display — Copyright 2017 The Playfair Display Project Authors
+  (https://github.com/clauseggers/Playfair-Display)
+
+Both fonts are licensed under the SIL Open Font License, Version 1.1.
+Full licence text: https://openfontlicense.org/open-font-license-official-text/
+They are used here unmodified, only for displaying this website.
